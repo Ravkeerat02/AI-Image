@@ -2,7 +2,8 @@ import express from "express";
 import cors from "cors";
 import { config } from "dotenv";
 import connectDB from "./mongodb/connect.js";
-
+import postRoutes from "./routes/postRoutes.js";
+import dalleRoutes from "./routes/dalleRoutes.js";
 config();
 
 const app = express();
@@ -11,6 +12,9 @@ const port = process.env.PORT || 443;
 // Middleware
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
+
+app.use("/api/v1/routes,postRoutes");
+app.use("/api/v1/routes,dalleRoutes");
 
 // Define routes
 app.get("/", handleRootRequest);
