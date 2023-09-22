@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { preview } from "../assets";
@@ -18,10 +18,65 @@ const CreatePost = () => {
   const [loading, setLoading] = useState(false);
 
   // hnandles image submission - stores the backedn
-  const genrateImage = () => {};
-  // takes care of submission
-  const handleSubmit = () => {};
-  // takes care of form changes
+  const genrateImage = async () => {
+    if (form.prompt) {
+      try {
+        setGeneratingImg(true);
+        const response = await fetch("http://localhost:8080/api/v1/dalle", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ prompt: form.prompt }), // Include the prompt in the request body
+        });
+
+        // Handle the response from the server as needed
+        const data = await response.json();
+        setForm({ ...form, photo: `data:image/jpeg;base64,${data.photo}` });
+      } catch (error) {
+        alert(error);
+      } finally {
+        setGeneratingImg(false);
+      }
+    } else {
+      alert("Please enter a prompt");
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (form.prompt && form.photo) {
+      setLoading(true);
+
+      try {
+        const response = await fetch(`http://localhost:8080/api/v1/posts`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(form),
+        });
+
+        // Assuming you want to parse the response as JSON
+        const responseData = await response.json();
+
+        // Handle the response data if needed
+        console.log("Form submission response:", responseData);
+
+        // Navigate to the home page after successful submission
+        navigate("/");
+      } catch (error) {
+        console.error("Error submitting form:", error);
+        alert("An error occurred while submitting the form.");
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      alert("Please provide a prompt and a photo.");
+    }
+  };
+  // akes care of form changes
   const handleChange = (e) => {
     // updating name with teh value
     setForm({ ...form, [e.target.name]: e.target.value });

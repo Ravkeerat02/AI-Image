@@ -7,7 +7,7 @@ import dalleRoutes from "./routes/dalleRoutes.js";
 config();
 
 const app = express();
-const port = process.env.PORT || 443;
+const port = process.env.PORT || 8080;
 
 // Middleware
 app.use(cors());
