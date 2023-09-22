@@ -29,8 +29,8 @@ Clone the repository using the following link: [AI-Image Repository](https://git
 Navigate to the project directory.
 Install dependencies for the server using npm:
 ```sh
-   cd server
-   npm install
+cd server
+npm install
 ```
 Start the server:
 ```sh
