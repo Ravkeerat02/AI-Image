@@ -10,14 +10,14 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-router.get("/", (req, res) => {
+// welcome page
+router.route("/").get((req, res) => {
   res.status(200).json({ message: "Hello from DALL-E!" });
 });
 
-router.post("/", async (req, res) => {
+router.route("/").post(async (req, res) => {
   try {
     const { prompt } = req.body;
-
     const aiResponse = await openai.images.generate({
       prompt,
       n: 1,
@@ -26,18 +26,16 @@ router.post("/", async (req, res) => {
     });
 
     const images = aiResponse.data.images;
+
     if (images && images.length > 0) {
-      const image = images[0].b64_json;
-      res.status(200).json({ photo: image });
+      const imageBase64JSON = images[0].b64_json;
+      res.status(200).json({ photo: imageBase64JSON });
     } else {
-      console.error("No image found in the response:", aiResponse);
-      res.status(500).send("No image found in the response");
+      res.status(500).json({ message: "No images were generated." });
     }
   } catch (error) {
-    console.error("Error generating image:", error);
-    res
-      .status(500)
-      .send(error?.response?.data?.error?.message || "Something went wrong");
+    console.error(error);
+    res.status(500).json({ message: "Something went wrong." });
   }
 });
 

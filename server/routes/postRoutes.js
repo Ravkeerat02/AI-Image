@@ -21,7 +21,10 @@ router.route("/").get(async (req, res) => {
     res.status(200).json({ success: true, data: posts });
   } catch (error) {
     console.error("Error getting posts:", error);
-    res.status(200).json({ success: false, message: error });
+    res.status(500).json({
+      success: false,
+      message: "Fetching posts failed, please try again",
+    });
   }
 });
 // create a post - used to uplaod
@@ -33,7 +36,7 @@ router.route("/").post(async (req, res) => {
     const newPost = await Post.create({
       name,
       prompt,
-      photoUrl,
+      photo: photoUrl.url,
     });
     res.status(201).json({ success: true, data: newPost });
   } catch (error) {
