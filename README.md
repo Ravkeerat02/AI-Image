@@ -1,4 +1,4 @@
-# Build and Deploy a Full Stack MERN AI Image Generation App
+#  AI Image Generation App
 
 This documentation provides an overview of the project demonstrated in the YouTube tutorial by Midjourney on building and deploying a Full Stack MERN AI Image Generation App, along with a DALL-E Clone.
 
